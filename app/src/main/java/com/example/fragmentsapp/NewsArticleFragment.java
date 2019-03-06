@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 
 /**
@@ -52,19 +53,21 @@ public class NewsArticleFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {//step 2b
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
-
+TextView articleTextView;
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,//step 2c
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_news_article, container, false);
+        View view = inflater.inflate(R.layout.fragment_news_article, container, false);
+        articleTextView = view.findViewById(R.id.articletextview);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -74,16 +77,11 @@ public class NewsArticleFragment extends Fragment {
         }
     }
 
-   /* @Override
-    public void onAttach(Context context) {
+   @Override
+    public void onAttach(Context context) {//step 2a
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }*/
+
+    }
 
     @Override
     public void onDetach() {
@@ -104,5 +102,10 @@ public class NewsArticleFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+
+    public  void updateArticleView(String headline){//step 3b
+        articleTextView.setText(headline);
     }
 }

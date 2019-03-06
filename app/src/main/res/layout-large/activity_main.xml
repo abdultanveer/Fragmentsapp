@@ -12,7 +12,7 @@
         android:layout_weight="1" />
 
     <fragment
-        android:id="@+id/fragment3"
+        android:id="@+id/article_fragment"
         android:name="com.example.fragmentsapp.NewsArticleFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"

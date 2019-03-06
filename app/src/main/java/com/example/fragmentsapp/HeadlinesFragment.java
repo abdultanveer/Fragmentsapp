@@ -7,27 +7,43 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.Toast;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link HeadlinesFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link HeadlinesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HeadlinesFragment extends Fragment {
+public class HeadlinesFragment extends Fragment implements AdapterView.OnItemClickListener {
+
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {//step 3
+        String headlines = parent.getItemAtPosition(position).toString();
+        Toast.makeText(getContext(), headlines, Toast.LENGTH_SHORT).show();
+        mListener.onArticleSelected(headlines);
+    }
+
+    public interface OnHeadlineSelectedListener {
+        public void onArticleSelected(String headlines);
+    }
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    ListView headlinesListView;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
+    private OnHeadlineSelectedListener mListener;
 
     public HeadlinesFragment() {
         // Required empty public constructor
@@ -52,7 +68,7 @@ public class HeadlinesFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {//step 2b
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
@@ -60,30 +76,29 @@ public class HeadlinesFragment extends Fragment {
         }
     }
 
+    //here the layout gets inflated and ui will be shown
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,//step 2c
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_headlines, container, false);
+        View view = inflater.inflate(R.layout.fragment_headlines, container, false);//view = fragment_headlines.xml
+        headlinesListView = view.findViewById(R.id.headlinesListview);
+        headlinesListView.setOnItemClickListener(this);
+        return  view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
+   /* public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
-    }
-
-   /* @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
     }*/
+
+   @Override
+    public void onAttach(Context context) {//step 2a
+        super.onAttach(context);
+        mListener = (OnHeadlineSelectedListener)getActivity();
+    }
 
     @Override
     public void onDetach() {
@@ -101,8 +116,8 @@ public class HeadlinesFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
+   /* public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
-    }
+    }*/
 }
